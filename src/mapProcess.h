@@ -9,7 +9,11 @@ struct mapStructure
 
     int mapColumn;
 
-    char **mapData;
+    int **mapData;
+
+    int *start;
+
+    int *end;
 };
 
 void free1DArray(char *array, int size);

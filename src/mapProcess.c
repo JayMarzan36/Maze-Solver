@@ -68,7 +68,28 @@ void loadMap(char mapPath[], MAPSTRUCTURE *mapStruct)
             }
             else
             {
-                (mapStruct->mapData)[tempRow][tempCol++] = tempChar;
+
+                if (tempChar == 's')
+                {
+                    (mapStruct->start) = malloc(2 * sizeof(int));
+                    (mapStruct->start)[0] = tempRow;
+                    (mapStruct->start)[1] = tempCol;
+                }
+                else if (tempChar == 'g')
+                {
+                    (mapStruct->end) = malloc(2 * sizeof(int));
+                    (mapStruct->end)[0] = tempRow;
+                    (mapStruct->end)[1] = tempCol;
+                }
+
+                if (tempChar == '#')
+                {
+                    (mapStruct->mapData)[tempRow][tempCol++] = 1;
+                }
+                else
+                {
+                    (mapStruct->mapData)[tempRow][tempCol++] = 0;
+                }
             }
         }
 
@@ -141,8 +162,8 @@ void printMap(MAPSTRUCTURE *mapStruct)
     {
         for (int j = 0; j < mapStruct->mapColumn; j++)
         {
-            putchar(mapStruct->mapData[i][j]);
+            printf("%d",mapStruct->mapData[i][j]);
         }
-        putchar('\n');
+        printf("\n");
     }
 }

@@ -14,7 +14,7 @@ int main()
 
     printf("Done loading map\n");
 
-    printf("Map Row : %i\nMap Column : %i\n", mapStruct.mapRow, mapStruct.mapColumn);
+    printf("Map Row : %i\nMap Column : %i\nStart : (%d , %d)\nEnd : (%d , %d)\n", mapStruct.mapRow, mapStruct.mapColumn, mapStruct.start[0], mapStruct.start[1], mapStruct.end[0], mapStruct.end[1]);
 
     printMap(mapStructPtr);
 
