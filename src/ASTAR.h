@@ -1,6 +1,3 @@
-int rows;
-int cols;
-
 typedef struct Node {
     int *point;
 
@@ -20,9 +17,10 @@ typedef struct priorityQueue {
 } priorityQueue;
 
 
-int isValid(int **grid, int **visited, int row, int col);
+int isValid(int **grid, int **visited, int row, int col, int rows, int cols);
 int manhattanDistance(int start[], int end[]);
 void queuePush(priorityQueue *queue, Node *node);
 void reconstructPath(Node *currentNode);
-void aStar(int **grid, int start[], int end[]);
+void aStar(int **grid, int start[], int end[], int rows, int cols);
+void printAStar(int **grid, int **visited, int rows, int cols);
 Node *priorityQueuePop(priorityQueue *queue);

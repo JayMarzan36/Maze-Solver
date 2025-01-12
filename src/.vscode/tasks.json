@@ -10,6 +10,7 @@
 				"-g",
 				"main.c",
 				"mapProcess.c",
+				"ASTAR.c",
 				"-o",
 				"${fileDirname}\\${fileBasenameNoExtension}.exe"
 			],

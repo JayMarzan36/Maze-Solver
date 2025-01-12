@@ -1,14 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
 
-#include <ASTAR.h>
+#include "ASTAR.h"
 
-int main()
-{
-
-    return 0;
-}
-
-int isValid(int **grid, int **visited, int row, int col)
+int isValid(int **grid, int **visited, int row, int col, int rows, int cols)
 {
     return (row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] != 1 && !visited[row][col]);
 }
@@ -46,13 +45,13 @@ void reconstructPath(Node *currentNode)
 
     while (temp != NULL)
     {
-        printf("(%d, %d)\n", temp->point[0], temp->point[1]);
+        //printf("(%d, %d)\n", temp->point[0], temp->point[1]);
 
         temp = temp->parent;
     }
 }
 
-void aStar(int **grid, int start[], int end[])
+void aStar(int **grid, int start[], int end[], int rows, int cols)
 {
     int **visited = malloc(rows * sizeof(int *));
     for (int i = 0; i < rows; i++)
@@ -90,9 +89,26 @@ void aStar(int **grid, int start[], int end[])
 
     while (queue->size > 0)
     {
+
         Node *currentNode = priorityQueuePop(queue);
 
         visited[currentNode->point[0]][currentNode->point[1]] = 1;
+
+        printAStar(grid, visited, rows, cols);
+
+        usleep(200000);
+
+        if (visited[end[0]][end[1]])
+        {
+            free(queue->nodes);
+            free(queue);
+            queue = NULL;
+
+            free(visited);
+            visited = NULL;
+            
+            break;
+        }
 
         if (currentNode->point[0] == end[0] && currentNode->point[1] == end[1])
         {
@@ -114,7 +130,7 @@ void aStar(int **grid, int start[], int end[])
 
             int newCol = col + colOffset[i];
 
-            if (isValid(grid, visited, newRow, newCol))
+            if (isValid(grid, visited, newRow, newCol, rows, cols))
             {
                 Node newNode;
 
@@ -136,4 +152,25 @@ void aStar(int **grid, int start[], int end[])
             }
         }
     }
+}
+
+void printAStar(int **grid, int **visited, int rows, int cols)
+{
+    printf("\n");
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (visited[i][j])
+            {
+                printf(". ");
+            }
+            else
+            {
+                printf("%d ", grid[i][j]);
+            }   
+        }
+        printf("\n");
+    }
+    
 }

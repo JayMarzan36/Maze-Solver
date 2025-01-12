@@ -43,6 +43,8 @@ void loadMap(char mapPath[], MAPSTRUCTURE *mapStruct)
             exit(EXIT_FAILURE);
         }
 
+        printf("Map Row : %d\nMap Column : %d\n", mapStruct->mapRow, mapStruct->mapColumn);
+
         genMemoryForMap(mapStruct);
 
         int tempRow = 0, tempCol = 0;
@@ -144,15 +146,8 @@ void freeMap(MAPSTRUCTURE *mapStruct)
 {
     if (mapStruct->mapData != NULL)
     {
-        for (int i = 0; i < mapStruct->mapRow; i++)
-        {
-            free(mapStruct->mapData[i]);
-        }
-
         free(mapStruct->mapData);
         mapStruct->mapData = NULL;
-
-        printf("Successfully Freed mapData\n");
     }
 }
 
@@ -162,7 +157,7 @@ void printMap(MAPSTRUCTURE *mapStruct)
     {
         for (int j = 0; j < mapStruct->mapColumn; j++)
         {
-            printf("%d",mapStruct->mapData[i][j]);
+            printf("%d", mapStruct->mapData[i][j]);
         }
         printf("\n");
     }

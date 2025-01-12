@@ -1,11 +1,12 @@
 #include <stdio.h>
 
 #include "mapProcess.h"
+
 #include "ASTAR.h"
 
 int main()
 {
-    char testMapPath[] = "map_data/test_map.txt";
+    char testMapPath[] = "map_data/map.txt";
 
     struct mapStructure mapStruct;
 
@@ -19,6 +20,11 @@ int main()
 
     printMap(mapStructPtr);
 
+    //aStar(mapStruct.mapData, mapStruct.start, mapStruct.end, mapStruct.mapRow, mapStruct.mapColumn);
+
+    printf("Done A* algorithm\n");
+
+    freeMap(mapStructPtr);
 
     return 0;
 }
