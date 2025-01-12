@@ -106,11 +106,9 @@ void genMemoryForMap(MAPSTRUCTURE *mapStruct)
 
     if (mapStruct->mapData == NULL)
     {
-        freeMap(mapStruct);
-
         printf("Allocating memory space for mapData\n");
 
-        mapStruct->mapData = malloc(mapStruct->mapRow * sizeof(char *));
+        mapStruct->mapData = malloc(mapStruct->mapRow * sizeof(int *));
 
         if (mapStruct->mapData == NULL)
         {
@@ -120,7 +118,7 @@ void genMemoryForMap(MAPSTRUCTURE *mapStruct)
 
         for (int i = 0; i < mapStruct->mapRow; i++)
         {
-            mapStruct->mapData[i] = malloc(mapStruct->mapColumn * sizeof(char));
+            mapStruct->mapData[i] = malloc(mapStruct->mapColumn * sizeof(int));
 
             if (mapStruct->mapData[i] == NULL)
             {
