@@ -19,13 +19,13 @@ int manhattanDistance(int start[], int end[])
 
 void queuePush(priorityQueue *queue, Node *node)
 {
-    queue->nodes[queue->size++] = *node;
+    queue->nodes[queue->size++] = node;
 
     for (int i = queue->size - 1; i > 0; i--)
     {
-        if ((queue->nodes[i].totalCost) < (queue->nodes[i - 1].totalCost))
+        if ((queue->nodes[i]->totalCost) < (queue->nodes[i - 1]->totalCost))
         {
-            Node temp = queue->nodes[i];
+            Node *temp = queue->nodes[i];
 
             queue->nodes[i] = queue->nodes[i - 1];
 
@@ -36,23 +36,27 @@ void queuePush(priorityQueue *queue, Node *node)
 
 Node *priorityQueuePop(priorityQueue *queue)
 {
-    return &queue->nodes[--queue->size];
+    return queue->nodes[--queue->size];
 }
 
-void reconstructPath(Node *currentNode)
+void reconstructPath(Node *currentNode, int **grid)
 {
-    Node *temp = currentNode;
-
-    while (temp != NULL)
+    while (currentNode != NULL)
     {
-        //printf("(%d, %d)\n", temp->point[0], temp->point[1]);
 
-        temp = temp->parent;
+        grid[currentNode->point[0]][currentNode->point[1]] = 2;
+
+        currentNode = currentNode->parent;
+        usleep(200000);
     }
 }
 
 void aStar(int **grid, int start[], int end[], int rows, int cols)
 {
+
+    printf("Start Node: %d %d\n", start[0], start[1]);
+    printf("End Node: %d %d\n", end[0], end[1]);
+
     int **visited = malloc(rows * sizeof(int *));
     for (int i = 0; i < rows; i++)
     {
@@ -69,23 +73,26 @@ void aStar(int **grid, int start[], int end[], int rows, int cols)
 
     priorityQueue *queue = malloc(sizeof(priorityQueue));
 
-    queue->nodes = malloc(rows * cols * sizeof(Node));
+    queue->nodes = malloc(rows * cols * sizeof(Node *));
 
     queue->size = 0;
 
-    Node startNode;
+    Node *startNode = malloc(sizeof(Node));
 
-    startNode.point = start;
+    startNode->point = malloc(2 * sizeof(int));
 
-    startNode.startCost = 0;
+    startNode->point[0] = start[0];
+    startNode->point[1] = start[1];
 
-    startNode.heuristic = manhattanDistance(start, end);
+    startNode->startCost = 0;
 
-    startNode.totalCost = startNode.startCost + startNode.heuristic;
+    startNode->heuristic = manhattanDistance(start, end);
 
-    startNode.parent = NULL;
+    startNode->totalCost = startNode->startCost + startNode->heuristic;
 
-    queuePush(queue, &startNode);
+    startNode->parent = NULL;
+
+    queuePush(queue, startNode);
 
     while (queue->size > 0)
     {
@@ -94,26 +101,22 @@ void aStar(int **grid, int start[], int end[], int rows, int cols)
 
         visited[currentNode->point[0]][currentNode->point[1]] = 1;
 
-        printAStar(grid, visited, rows, cols);
-
-        usleep(200000);
-
-        if (visited[end[0]][end[1]])
+        if (currentNode->point[0] == end[0] && currentNode->point[1] == end[1])
         {
+
+            printf("Goal reached\n");
+            reconstructPath(currentNode, grid);
+
+            printAStar(grid, visited, rows, cols);
+
             free(queue->nodes);
             free(queue);
             queue = NULL;
 
             free(visited);
             visited = NULL;
-            
-            break;
-        }
 
-        if (currentNode->point[0] == end[0] && currentNode->point[1] == end[1])
-        {
-            reconstructPath(currentNode);
-            return;
+            break;
         }
 
         int row = currentNode->point[0];
@@ -132,23 +135,23 @@ void aStar(int **grid, int start[], int end[], int rows, int cols)
 
             if (isValid(grid, visited, newRow, newCol, rows, cols))
             {
-                Node newNode;
+                Node *newNode = malloc(sizeof(Node));
 
-                newNode.point = malloc(2 * sizeof(int));
+                newNode->point = malloc(2 * sizeof(int));
 
-                newNode.point[0] = newRow;
+                newNode->point[0] = newRow;
 
-                newNode.point[1] = newCol;
+                newNode->point[1] = newCol;
 
-                newNode.startCost = currentNode->startCost + 1;
+                newNode->startCost = currentNode->startCost + 1;
 
-                newNode.heuristic = manhattanDistance(newNode.point, end);
+                newNode->heuristic = manhattanDistance(newNode->point, end);
 
-                newNode.totalCost = newNode.startCost + newNode.heuristic;
+                newNode->totalCost = newNode->startCost + newNode->heuristic;
 
-                newNode.parent = currentNode;
+                newNode->parent = currentNode;
 
-                queuePush(queue, &newNode);
+                queuePush(queue, newNode);
             }
         }
     }
@@ -161,16 +164,20 @@ void printAStar(int **grid, int **visited, int rows, int cols)
     {
         for (int j = 0; j < cols; j++)
         {
-            if (visited[i][j])
+
+            if (grid[i][j] == 2)
             {
                 printf(". ");
             }
+            else if (grid[i][j] == 0) {
+                printf("  ");
+            }
+
             else
             {
                 printf("%d ", grid[i][j]);
-            }   
+            }
         }
         printf("\n");
     }
-    
 }

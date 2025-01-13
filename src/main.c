@@ -6,7 +6,7 @@
 
 int main()
 {
-    char testMapPath[] = "map_data/test_map.txt";
+    char testMapPath[] = "map_data/map3.txt";
 
     struct mapStructure mapStruct;
 
@@ -16,9 +16,7 @@ int main()
 
     printf("Done loading map\n");
 
-    printf("Start : (%d , %d)\nEnd : (%d , %d)\n", mapStruct.start[0], mapStruct.start[1], mapStruct.end[0], mapStruct.end[1]);
-
-    printMap(mapStructPtr);
+    // printMap(mapStructPtr);
 
     aStar(mapStruct.mapData, mapStruct.start, mapStruct.end, mapStruct.mapRow, mapStruct.mapColumn);
 
