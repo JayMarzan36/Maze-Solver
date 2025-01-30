@@ -6,21 +6,17 @@
 
 int main()
 {
-    char testMapPath[] = "map_data/map3.txt";
+    char mapPath[] = "map_data/map.txt";
 
     struct mapStructure mapStruct;
 
     MAPSTRUCTURE *mapStructPtr = &mapStruct;
 
-    loadMap(testMapPath, mapStructPtr);
+    loadMap(mapPath, mapStructPtr);
 
     printf("Done loading map\n");
 
-    // printMap(mapStructPtr);
-
     aStar(mapStruct.mapData, mapStruct.start, mapStruct.end, mapStruct.mapRow, mapStruct.mapColumn);
-
-    printf("Done A* algorithm\n");
 
     freeMap(mapStructPtr);
 

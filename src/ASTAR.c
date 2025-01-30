@@ -47,7 +47,6 @@ void reconstructPath(Node *currentNode, int **grid)
         grid[currentNode->point[0]][currentNode->point[1]] = 2;
 
         currentNode = currentNode->parent;
-        usleep(200000);
     }
 }
 
@@ -104,7 +103,6 @@ void aStar(int **grid, int start[], int end[], int rows, int cols)
         if (currentNode->point[0] == end[0] && currentNode->point[1] == end[1])
         {
 
-            printf("Goal reached\n");
             reconstructPath(currentNode, grid);
 
             printAStar(grid, visited, rows, cols);
